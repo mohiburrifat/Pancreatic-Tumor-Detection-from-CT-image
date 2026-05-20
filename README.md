@@ -30,6 +30,8 @@ MobileNetV2	CNN model
 OpenCV	Image processing
 NumPy	Numerical operations
 HTML/CSS	Frontend UI
+
+
 📂 Project Structure
 Pancreatic-Tumor-Detection-from-CT-image/
 │
@@ -43,6 +45,9 @@ Pancreatic-Tumor-Detection-from-CT-image/
 │   ├── style.css
 │   ├── uploads/
 │   └── gradcam/
+
+
+
 🚀 Installation Guide
 1️⃣ Clone the Repository
 git clone https://github.com/your-username/Pancreatic-Tumor-Detection-from-CT-image.git
