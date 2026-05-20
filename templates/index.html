@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pancreatic Tumor Detection Expert System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="app-shell">
+
+        <header class="hero">
+            <h1>Pancreatic Tumor Detection Expert System</h1>
+            <p>AI-powered pancreatic CT scan analysis with explainable heatmaps.</p>
+        </header>
+
+        <main class="dashboard-card">
+
+            <form class="upload-bar" method="POST" enctype="multipart/form-data">
+                <label class="file-label">
+                    <span class="file-label-text">Choose CT scan</span>
+                    <input type="file" name="file" accept="image/*" required>
+                </label>
+                <button type="submit">Analyze CT Image</button>
+            </form>
+
+            {% if error %}
+            <div class="error-banner">{{ error }}</div>
+            {% endif %}
+
+            <section class="prediction-block">
+                <span class="prediction-label">Prediction Result</span>
+                {% if prediction %}
+                <span class="prediction-value prediction-value--{{ 'tumor' if prediction == 'Tumor' else 'no-tumor' }}">{{ prediction }}</span>
+                {% else %}
+                <span class="prediction-value prediction-value--idle">—</span>
+                {% endif %}
+            </section>
+
+            <section class="image-row">
+                <article class="image-panel">
+                    <h3>Original CT Scan</h3>
+                    {% if uploaded_image %}
+                    <img src="{{ url_for('static', filename='uploads/' + uploaded_image) }}" alt="Original CT scan">
+                    {% else %}
+                    <div class="image-empty">Awaiting scan</div>
+                    {% endif %}
+                </article>
+                <article class="image-panel">
+                    <h3>Grad-CAM Heatmap</h3>
+                    {% if gradcam_image %}
+                    <img src="{{ url_for('static', filename='gradcam/' + gradcam_image) }}" alt="Grad-CAM heatmap">
+                    {% else %}
+                    <div class="image-empty">Awaiting analysis</div>
+                    {% endif %}
+                </article>
+            </section>
+
+            {% if recommendation %}
+            <p class="recommendation">{{ recommendation }}</p>
+            {% endif %}
+
+            <section class="metrics-row">
+                <div class="metric">
+                    <span class="metric-label">Confidence</span>
+                    <span class="metric-value">{% if confidence is defined %}{{ confidence }}%{% else %}—{% endif %}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Inference Time</span>
+                    <span class="metric-value">{% if inference_time is defined %}{{ inference_time }}s{% else %}—{% endif %}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Risk Level</span>
+                    <span class="metric-value {% if risk_level %}risk-{{ risk_level|lower|replace(' ', '-') }}{% endif %}">
+                        {{ risk_level if risk_level else '—' }}
+                    </span>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
